@@ -4,6 +4,13 @@ import CartProduct from "../components/CartProduct";
 
 export default function CartPage() {
   const { cart } = useContext(CartContext);
+
+  const grandTotal = cart.reduce((acc, product) => {
+    return acc + product.price * product.quantity;
+  }, 0);
+
+  console.log(grandTotal);
+
   return (
     <div className="max-w-6xl mx-auto my-4">
       <div>
@@ -22,6 +29,7 @@ export default function CartPage() {
       {cart.map((product) => (
         <CartProduct key={product.id} product={product} />
       ))}
+      <p>Grand Total: {grandTotal}</p>
     </div>
   );
 }

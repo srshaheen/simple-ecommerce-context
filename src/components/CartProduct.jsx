@@ -1,36 +1,18 @@
 import { DeleteIcon, MinusIcon, PlusIcon } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { CartContext } from "../context/cart/CartContext";
 
 export default function CartProduct({ product }) {
   const { dispatch } = useContext(CartContext);
-  const [quantity, setQuantity] = useState(product.quantity);
 
-  const subTotal = product.price * quantity;
+  const subTotal = product.price * product.quantity;
 
   const handleIncrement = () => {
-    setQuantity((prev) => prev + 1);
     dispatch({ type: "Increment", payload: product });
   };
 
   const handleDecrement = () => {
-    if (quantity === 1) {
-      setQuantity(1);
-    } else {
-      setQuantity((prev) => prev - 1);
-      dispatch({ type: "Decrement", payload: product });
-    }
-  };
-
-  const handleChange = (e) => {
-    const inputValue = parseInt(e.target.value);
-
-    if (isNaN(inputValue)) {
-      setQuantity(1);
-    } else {
-      setQuantity(inputValue);
-      dispatch({ type: "updateQuantity", payload: { product, quantity } });
-    }
+    dispatch({ type: "Decrement", payload: product });
   };
 
   return (
@@ -44,7 +26,7 @@ export default function CartProduct({ product }) {
         <button onClick={handleDecrement} className="bg-gray-200 p-1 rounded-full cursor-pointer">
           <MinusIcon size={18} />
         </button>
-        <input onChange={handleChange} type="text" value={quantity} className="w-1/3 text-center" />
+        <input type="text" value={product.quantity} className="w-1/3 text-center" />
         <button onClick={handleIncrement} className="bg-gray-200 p-1 rounded-full cursor-pointer">
           <PlusIcon size={18} />
         </button>
@@ -52,7 +34,7 @@ export default function CartProduct({ product }) {
       <p>$ {subTotal}</p>
       <button
         onClick={() => dispatch({ type: "Remove", payload: product.id })}
-        className="flex justify-center items-center"
+        className="flex justify-center items-center cursor-pointer"
       >
         <DeleteIcon />
       </button>

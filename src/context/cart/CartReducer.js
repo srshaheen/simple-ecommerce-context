@@ -30,21 +30,13 @@ export const CartReducer = (state, action) => {
     }
 
     case "Decrement": {
+      if (action.payload.quantity === 1) {
+        return state;
+      }
+
       const updatedCart = state.map((product) => {
         if (product.id === action.payload.id) {
           return { ...action.payload, quantity: action.payload.quantity - 1 };
-        } else {
-          return product;
-        }
-      });
-
-      return updatedCart;
-    }
-
-    case "updateQuantity": {
-      const updatedCart = state.map((product) => {
-        if (product.id === action.payload.product.id) {
-          return { ...action.payload.product, quantity: action.payload.quantity };
         } else {
           return product;
         }
